@@ -130,5 +130,9 @@ docs/**/modelzoo.md
 
 # Pytorch
 *.pth
+*.pt
 
 *.DS_Store
+# vis_results
+
+vis_results/human3d

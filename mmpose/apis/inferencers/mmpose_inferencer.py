@@ -247,4 +247,4 @@ class MMPoseInferencer(BaseMMPoseInferencer):
             window_name = self.inferencer.video_info['name']
 
         return self.inferencer.visualize(
-            inputs, preds, window_name=window_name, **kwargs)
+            inputs, preds, True, window_name=window_name, **kwargs)
