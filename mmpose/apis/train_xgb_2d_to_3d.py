@@ -211,19 +211,26 @@ def display_model_aliases(model_aliases: Dict[str, str]) -> None:
 
 
 
-def train_xgb(dataset_path, save_at):
+def train_xgb(merged_video, dataset_path, save_at):
     init_args, call_args, display_alias = parse_args()
     
     if display_alias:
         model_alises = get_model_aliases(init_args['scope'])
         display_model_aliases(model_alises)
     else:
+        call_args['inputs'] = merged_video
         inferencer = MMPoseInferencer(**init_args)
 
         frames_results = inferencer(**call_args)
         frames_keypoints = get_frames_keypoints_as_list(frames_results)
+
+        keypoints3d_path = 'data_sample_directory/key3d.csv'
+        save_3d_keypoints(frames_keypoints, keypoints3d_path)
         
         dataframe = calculate_and_return_angles(frames_keypoints)
+
+        angles3d_path = 'data_sample_directory/angle3d.csv'
+        save_3d_angles(dataframe, angles3d_path)
 
         labeled_dataframe = labeling_dataframe(dataframe, dataset_path)
 
@@ -232,8 +239,9 @@ def train_xgb(dataset_path, save_at):
 
 
 if __name__ == '__main__':
-    dataset_path = '/home/apdp/3D/samples/dataset'
-    save_the_wights_at = "/home/apdp/3D/mmpose/vis_results/model_weights.json"
-    train_xgb(dataset_path, save_the_wights_at)
+    merged_video = '/data_sample_directory/merged.mp4'
+    dataset_path = '/data_sample_directory/sample/dataset'
+    save_the_wights_at = "/data_sample_directory/model_weights2.json"
+    train_xgb(merged_video, dataset_path, save_the_wights_at)
 
 
